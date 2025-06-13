@@ -1,9 +1,12 @@
 package com.example.demo.domain;
 
+import java.time.Instant;
+
 import com.asentinel.common.orm.FetchType;
 import com.asentinel.common.orm.mappers.Child;
 import com.asentinel.common.orm.mappers.Column;
 import com.asentinel.common.orm.mappers.PkColumn;
+import com.asentinel.common.orm.mappers.SqlParam;
 import com.asentinel.common.orm.mappers.Table;
 
 @Table("CarModels")
@@ -25,15 +28,19 @@ public class CarModel {
 	@Child(fkName = COL_CAR_MANUFACTURER, fetchType = FetchType.LAZY)
 	private CarManufacturer carManufacturer;
 	
+	@Column(value = "ReleaseTime", sqlParam = @SqlParam("timestamp"))
+	private Instant releaseTime;
+	
 	// ORM constructor
 	protected CarModel() {
 		
 	}
 
-	public CarModel(String name, CarType type, CarManufacturer carManufacturer) {
+	public CarModel(String name, CarType type, CarManufacturer carManufacturer, Instant releaseTime) {
 		this.name = name;
 		this.type = type;
 		this.carManufacturer = carManufacturer;
+		this.releaseTime = releaseTime;
 	}
 
 	public int getId() {
@@ -67,11 +74,19 @@ public class CarModel {
 	public void setCarManufacturer(CarManufacturer carManufacturer) {
 		this.carManufacturer = carManufacturer;
 	}
+	
+	public Instant getReleaseTime() {
+		return releaseTime;
+	}
+
+	public void setReleaseTime(Instant releaseTime) {
+		this.releaseTime = releaseTime;
+	}
 
 	@Override
 	public String toString() {
 		return "CarModel [id=" + id + ", name=" + name + ", type=" + type + ", carManufacturer=" + carManufacturer
-				+ "]";
+				+ ", releaseTime=" + releaseTime + "]";
 	}
 	
 }

@@ -6,6 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -25,6 +27,8 @@ import com.asentinel.common.orm.jql.SqlBuilderFactory;
 import com.asentinel.common.orm.persist.SimpleUpdater;
 import com.asentinel.common.orm.query.DefaultSqlFactory;
 import com.asentinel.common.orm.query.SqlFactory;
+import com.example.demo.converters.InstantToTimestampConverter;
+import com.example.demo.converters.TimestampToInstantConverter;
 
 
 @SpringBootApplication
@@ -65,9 +69,10 @@ public class DemoApplication {
     }
 
     @Bean
-    public DefaultEntityDescriptorTreeRepository entityDescriptorTreeRepository(SqlBuilderFactory sqlBuilderFactory) {
+    public DefaultEntityDescriptorTreeRepository entityDescriptorTreeRepository(SqlBuilderFactory sqlBuilderFactory, ConversionService conversionService) {
         DefaultEntityDescriptorTreeRepository treeRepository = new DefaultEntityDescriptorTreeRepository();
         treeRepository.setSqlBuilderFactory(sqlBuilderFactory);
+        treeRepository.setConversionService(conversionService);
         return treeRepository;
     }
 
@@ -80,9 +85,19 @@ public class DemoApplication {
     }
 
     @Bean
+    public ConversionService ormConversionService() {
+    	GenericConversionService conversionService = new GenericConversionService();
+    	conversionService.addConverter(new TimestampToInstantConverter());
+    	conversionService.addConverter(new InstantToTimestampConverter());
+    	return conversionService;
+    }
+    
+    @Bean
     public OrmOperations orm(JdbcFlavor jdbcFlavor, SqlQuery sqlQuery,
-                             SqlBuilderFactory sqlBuilderFactory) {
-        return new OrmTemplate(sqlBuilderFactory, new SimpleUpdater(jdbcFlavor, sqlQuery));
+                             SqlBuilderFactory sqlBuilderFactory, ConversionService conversionService) {
+       	SimpleUpdater updater = new SimpleUpdater(jdbcFlavor, sqlQuery);
+    	updater.setConversionService(conversionService);
+        return new OrmTemplate(sqlBuilderFactory, updater);
     }
 
 	public static void main(String[] args) {

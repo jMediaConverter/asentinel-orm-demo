@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Demo project for Asentinel ORM</description>
 	<properties>
@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>com.asentinel.common</groupId>
 			<artifactId>asentinel-common</artifactId>
-			<version>1.70.0</version>
+			<version>1.71.0</version>
 		</dependency>		
 		
 		<dependency>

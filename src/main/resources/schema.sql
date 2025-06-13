@@ -9,6 +9,7 @@ CREATE TABLE CarModels(
 	CarManufacturer int,
 	NAME VARCHAR(255),
 	TYPE VARCHAR(15),
+	ReleaseTime TIMESTAMP(9) WITH TIME ZONE,
 	foreign key (CarManufacturer) references CarManufacturers(id)
 );
 

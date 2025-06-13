@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -55,20 +58,20 @@ public class BasicRunner {
 		logger.info("\n\npersist some data ...");
 		CarManufacturer mazda = new CarManufacturer("Mazda");
 		orm.update(mazda);
-		CarModel mx5 = new CarModel("mx5", CarType.CAR, mazda);
-		CarModel m3 = new CarModel("3", CarType.CAR, mazda);
-		CarModel m6 = new CarModel("6", CarType.CAR, mazda);
-		CarModel cx3 = new CarModel("cx3", CarType.SUV, mazda);
+		CarModel mx5 = new CarModel("mx5", CarType.CAR, mazda, Instant.from(ZonedDateTime.of(1989, 1, 20, 0, 0, 14, 1400, ZoneId.systemDefault())));
+		CarModel m3 = new CarModel("3", CarType.CAR, mazda, Instant.from(ZonedDateTime.of(2010, 5, 15, 0, 0, 16, 1600, ZoneId.systemDefault())));
+		CarModel m6 = new CarModel("6", CarType.CAR, mazda, null);
+		CarModel cx3 = new CarModel("cx3", CarType.SUV, mazda, Instant.from(ZonedDateTime.of(2011, 10, 25, 0, 0, 17, 1700, ZoneId.systemDefault())));
 		orm.update(mx5, m3, m6, cx3);
 		
 		CarManufacturer honda = new CarManufacturer("Honda");
 		orm.update(honda);
 		
-		CarModel accord = new CarModel("accord", CarType.CAR, honda);
+		CarModel accord = new CarModel("accord", CarType.CAR, honda, null);
 		orm.update(accord);
 		
-		CarModel civic = new CarModel("civic", CarType.CAR, honda);
-		CarModel crv = new CarModel("crv", CarType.SUV, honda);
+		CarModel civic = new CarModel("civic", CarType.CAR, honda, Instant.from(ZonedDateTime.of(2000, 3, 12, 0, 0, 18, 1800, ZoneId.systemDefault())));
+		CarModel crv = new CarModel("crv", CarType.SUV, honda, null);
 		orm.update(civic, crv);
 		
 		CarManufacturer toyota = new CarManufacturer("Toyota");
