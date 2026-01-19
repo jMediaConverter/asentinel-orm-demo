@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>com.asentinel.common</groupId>
 			<artifactId>asentinel-common</artifactId>
-			<version>1.71.0</version>
+			<version>1.71.6</version>
 		</dependency>		
 		
 		<dependency>
