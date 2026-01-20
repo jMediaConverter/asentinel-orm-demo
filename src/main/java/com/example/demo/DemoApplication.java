@@ -6,14 +6,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.support.ConfigurableConversionService;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import com.asentinel.common.jdbc.flavors.CustomArgumentPreparedStatementSetter;
-import com.asentinel.common.jdbc.flavors.JdbcFlavor;
-import com.asentinel.common.jdbc.flavors.h2.H2JdbcFlavor;
 import com.asentinel.common.orm.config.EnableAsentinelOrm;
 import com.asentinel.common.orm.config.OrmConversionServiceConfig;
 import com.example.demo.converters.InstantToTimestampConverter;
@@ -26,25 +20,6 @@ public class DemoApplication {
 	@Bean
 	public DataSource dataSource() {
 		return new SingleConnectionDataSource("jdbc:h2:mem:testdb", "sa", "", false);
-	}
-
-    @Bean
-    public JdbcFlavor jdbcFlavor() {
-        return new H2JdbcFlavor();
-    }
-	
-	@Bean
-	public JdbcOperations jdbcOperations(DataSource dataSource, JdbcFlavor jdbcFlavor) {
-		return new JdbcTemplate(dataSource) {
-			
-			/*
-			 * add support for byte[], InputStream and Enum params
-			 */
-			@Override
-			protected PreparedStatementSetter newArgPreparedStatementSetter(Object[] args) {
-				return new CustomArgumentPreparedStatementSetter(jdbcFlavor, args);
-			}
-		};
 	}
 	
 	@Bean
